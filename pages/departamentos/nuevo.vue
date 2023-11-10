@@ -2,7 +2,7 @@
     <div class="flex-container">
         <Navigator />
 
-        <UContainer class="container mt-4">
+        <!-- <UContainer class="container mt-4">
             <div class="flex flex-col items-start justify-start">
                 <UButton color="white" variant="solid" label="Regresar" to="/departamentos" />
             </div>
@@ -14,35 +14,38 @@
                 </template>
                 <UForm :schema="schema" @submit="onSubmit" :state="state">
 
-                    <UFormGroup label="Nombre" class="p-4" >
+                    <UFormGroup label="Nombre" class="p-2">
                         <UInput name="name" v-model="state.name" />
                     </UFormGroup>
 
-                    <UFormGroup label="Número de dormitorios" class="p-4">
+                    <UFormGroup label="Número de dormitorios" class="p-2">
                         <UInput name="numberOfRooms" v-model="state.numberOfRooms" />
                     </UFormGroup>
 
-                    <UFormGroup label="Precio mensual" class="p-4" >
+                    <UFormGroup label="Precio mensual" class="p-2">
                         <UInput name="monthlyRent" v-model="state.monthlyRent" />
                     </UFormGroup>
 
-                    <UFormGroup label="Descripción" class="p-4">
+                    <UFormGroup label="Descripción" class="p-2">
                         <UTextarea name="description" v-model="state.description" />
                     </UFormGroup>
 
-                    <UFormGroup label="¿Ocupado?" class="p-4">
+                    <UFormGroup label="¿Ocupado?" class="p-2">
                         <UCheckbox name="busy" label="¿Si o No?" v-model="state.busy" />
                     </UFormGroup>
 
-                    <UButton type="submit" label="Guardar" class="p-4" />
+                    <UButton type="submit" label="Guardar" class="p-2 mt-2" />
                 </UForm>
             </UCard>
-        </UContainer>
+            <UNotifications />
+        </UContainer> -->
+        <DepartamentoComponent :is-edit="false" />
     </div>
 </template>
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import Joi from 'joi'
 import type { FormSubmitEvent } from '#ui/types'
+
 
 const schema = Joi.object({
     name: Joi.string().required(),
@@ -59,19 +62,34 @@ const state = reactive({
     busy: false,
     description: undefined
 })
+const toast = useToast()
+const runtimeConfig = useRuntimeConfig()
 
 async function onSubmit(event: FormSubmitEvent<any>) {
     // Do something with event.data
-    console.log(event.data)
-    await $fetch('http://localhost:4000/api/apartment', {
+    await $fetch(`${runtimeConfig.public.API_URL}/apartment`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(event.data),
-        onRequestError: (error) => {
-            console.log(error.error.message)
+        onResponse: (response) => {
+            console.log(response)
+            if (response.response.status === 400) {
+                toast.add({
+                    title: 'Error',
+                    description: response.response._data?.message,
+                    timeout: 5000,
+                    color: 'red',
+                })
+            } else
+                toast.add({
+                    title: 'Success',
+                    description: 'Departamento creado con éxito',
+                    timeout: 5000,
+                    color: 'green',
+                })
         }
     })
 }
-</script>
+</script> -->
