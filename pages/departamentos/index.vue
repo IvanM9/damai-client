@@ -14,7 +14,7 @@
           </h1>
         </template>
 
-        <USelect :options="statusFilter" @change="selectFilter" placeholder="Activos/Inactivos"/>
+        <USelect :options="statusFilter" @change="selectFilter" placeholder="Activos/Inactivos" />
 
         <UTable :columns="columns" :rows="apartments">
           <template #actions-data="{ row }">
@@ -86,14 +86,14 @@
             <p> {{ apartmentData.busy ? "Sí" : "No" }}</p>
           </UFormGroup>
 
-          <!-- <UFormGroup>
-          <template #label>
-            <p class="font-bold dark:text-gray-200">
-              Contratos
-            </p>
-          </template>
-          <p> {{ apartmentData.tenant ? apartmentData.tenant.name : "No tiene" }}</p>
-        </UFormGroup> -->
+          <UFormGroup v-if="apartmentData.busy && apartmentData.leases[0]">
+            <template #label>
+              <p class="font-bold dark:text-gray-200">
+                Inquilino
+              </p>
+            </template>
+            <p> {{ `${apartmentData.leases[0]?.tenant?.firstName} ${apartmentData.leases[0]?.tenant?.lastName}` }}</p>
+          </UFormGroup>
 
           <UFormGroup>
             <template #label>
@@ -159,6 +159,17 @@ const apartmentData = ref({
   description: '',
   createdAt: '',
   updatedAt: '',
+  leases: [
+    {
+      id: 0,
+      startDate: '',
+      endDate: '',
+      tenant: {
+        firstName: '',
+        lastName: '',
+      }
+    }
+  ]
 });
 
 const statusFilter = [{
