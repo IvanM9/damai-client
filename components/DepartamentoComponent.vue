@@ -6,7 +6,7 @@
         <UCard class="mt-2">
             <template #header>
                 <h1>
-                    Ingresar nuevo departamento
+                    Registrar nuevo departamento
                 </h1>
             </template>
             <UForm :schema="schema" @submit="onSubmit" :state="state">
@@ -18,7 +18,7 @@
 
                 <UFormGroup label="Número de dormitorios" class="p-2" v-slot="{ error }" :error="!state.numberOfRooms">
                     <UInput name="numberOfRooms" v-model="state.numberOfRooms"
-                        :trailing-icon="error ? 'i-heroicons-exclamation-triangle-20-solid' : undefined" type="number"/>
+                        :trailing-icon="error ? 'i-heroicons-exclamation-triangle-20-solid' : undefined" type="number" />
                 </UFormGroup>
 
                 <UFormGroup label="Precio mensual" class="p-2" v-slot="{ error }" :error="!state.monthlyRent">
@@ -43,6 +43,8 @@
 <script setup lang="ts">
 import Joi from 'joi'
 import type { FormSubmitEvent } from '#ui/types'
+import axios from 'axios'
+
 const promp = defineProps({
     apartmentData: {
         type: Object,
@@ -77,27 +79,27 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     console.log(event.data)
     let url = !promp.isEdit ? `${runtimeConfig.public.API_URL}/apartment` : `${runtimeConfig.public.API_URL}/apartment/update/${promp.apartmentData?.id}`
 
-    try {
-        await $fetch(url, {
-            method: promp.isEdit ? 'PUT' : 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(event.data),
-        })
-        toast.add({
-            title: 'Success',
-            description: 'Departamento creado con éxito',
-            timeout: 5000,
-            color: 'green',
-        })
-    } catch (error) {
+    await axios({
+        method: promp.isEdit ? 'PUT' : 'POST',
+        url: url,
+        data: event.data,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }).catch((error) => {
         toast.add({
             title: 'Error',
             description: error.message,
             timeout: 5000,
             color: 'red',
         })
-    }
+    })
+
+    toast.add({
+        title: 'Success',
+        description: 'Departamento creado con éxito',
+        timeout: 5000,
+        color: 'green',
+    })
 }
 </script>

@@ -120,6 +120,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
+import axios from 'axios'
 
 const columns = [{
   key: 'index',
@@ -184,7 +185,8 @@ const selectedStatus = ref(true);
 
 const apartments = ref([]);
 async function getApartments() {
-  const data: never[] = await $fetch(`${runtimeConfig.public.API_URL}/apartment?status=${selectedStatus.value}`)
+  const data: never[] = (await axios.get(`${runtimeConfig.public.API_URL}/apartment?status=${selectedStatus.value}`)).data;
+
   let index = 0;
   apartments.value = data.map((apartment: any) => {
     apartment.index = ++index;
@@ -225,13 +227,15 @@ function items(row: any) {
 async function getInfoById(id: number) {
   console.log(id)
   isOpen.value = true;
-  apartmentData.value = await $fetch(`${runtimeConfig.public.API_URL}/apartment/${id}`)
+  apartmentData.value = (await axios.get(`${runtimeConfig.public.API_URL}/apartment/${id}`)).data
 }
 
 async function changeStatus(id: number) {
-  await $fetch(`${runtimeConfig.public.API_URL}/apartment/update-status/${id}`, {
-    method: 'PATCH'
+  await axios({
+    method: 'PATCH',
+    url: `${runtimeConfig.public.API_URL}/apartment/update-status/${id}`
   })
+
   await getApartments()
 }
 </script>
