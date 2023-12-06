@@ -13,11 +13,11 @@
 
                 <UFormGroup label="Nombres" class="p-2" v-slot="{ error }" :error="!state.firstName">
                     <UInput name="firstName" v-model="state.firstName"
-                        :trailing-icon="error ? 'i-heroicons-exclamation-triangle-20-solid' : undefined" />
+                        :trailing-icon="error ? 'i-heroicons-exclamation-triangle-20-solid' : undefined" :required="true" />
                 </UFormGroup>
 
                 <UFormGroup label="Apellidos" class="p-2">
-                    <UInput name="firstName" v-model="state.lastName"/>
+                    <UInput name="firstName" v-model="state.lastName" />
                 </UFormGroup>
 
                 <UFormGroup label="Número de télefono" class="p-2">
@@ -35,8 +35,24 @@
                 <UButton type="submit" label="Guardar" class="p-2 mt-2" />
             </UForm>
         </UCard>
+
         <UNotifications />
     </UContainer>
+    <UModal v-model="isOpen" prevent-close>
+        <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+            <template #header>
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+                        ¿Crear contrato?
+                    </h3>
+                    <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                        @click="isOpen = false" />
+                </div>
+            </template>
+
+            <ContratoComponent :tenant-id="newTenant"/>
+        </UCard>
+    </UModal>
 </template>
 <script setup lang="ts">
 import Joi from 'joi'
@@ -54,9 +70,7 @@ const promp = defineProps({
     }
 })
 
-const schema = Joi.object({
-    fistName: Joi.string(),
-})
+const newTenant = ref(0)
 
 const state = reactive({
     firstName: promp.tenantData?.firstName ?? undefined,
@@ -70,6 +84,8 @@ const state = reactive({
 const toast = useToast()
 const runtimeConfig = useRuntimeConfig()
 
+const isOpen = ref(false);
+
 async function onSubmit(event: FormSubmitEvent<any>) {
     console.log(event.data)
     let url = !promp.isEdit ? `${runtimeConfig.public.API_URL}/tenant` : `${runtimeConfig.public.API_URL}/tenant/update/${promp.tenantData?.id}`
@@ -81,13 +97,17 @@ async function onSubmit(event: FormSubmitEvent<any>) {
         headers: {
             'Content-Type': 'application/json'
         },
-    }).then(() => {
+    }).then((res) => {
         toast.add({
             title: 'Success',
             description: `Inquilino ${promp.isEdit ? 'actualizado' : 'creado'}`,
             timeout: 5000,
             color: 'green',
         })
+        if (!promp.isEdit) {
+            newTenant.value = res.data.id
+            changeModal()
+        }
     }).catch((error) => {
         toast.add({
             title: 'Error',
@@ -96,5 +116,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
             color: 'red',
         })
     })
+}
+
+function changeModal() {
+    isOpen.value = !isOpen.value;
+    console.log(isOpen.value)
 }
 </script>

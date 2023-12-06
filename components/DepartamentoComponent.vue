@@ -6,10 +6,10 @@
         <UCard class="mt-2">
             <template #header>
                 <h1>
-                    Registrar nuevo departamento
+                    {{ !promp.isEdit ? 'Crear' : 'Editar' }} Departamento
                 </h1>
             </template>
-            <UForm :schema="schema" @submit="onSubmit" :state="state">
+            <UForm @submit="onSubmit" :state="state">
 
                 <UFormGroup label="Nombre" class="p-2" v-slot="{ error }" :error="!state.name">
                     <UInput name="name" v-model="state.name"
@@ -61,7 +61,7 @@ const schema = Joi.object({
     numberOfRooms: Joi.number(),
     monthlyRent: Joi.string(),
     busy: Joi.boolean(),
-    description: Joi.optional()
+    // description: Joi.optional()
 })
 
 const state = reactive({
@@ -86,6 +86,13 @@ async function onSubmit(event: FormSubmitEvent<any>) {
         headers: {
             'Content-Type': 'application/json'
         },
+    }).then(() => {
+        toast.add({
+            title: 'Success',
+            description: 'Departamento creado con éxito',
+            timeout: 5000,
+            color: 'green',
+        })
     }).catch((error) => {
         toast.add({
             title: 'Error',
@@ -95,11 +102,6 @@ async function onSubmit(event: FormSubmitEvent<any>) {
         })
     })
 
-    toast.add({
-        title: 'Success',
-        description: 'Departamento creado con éxito',
-        timeout: 5000,
-        color: 'green',
-    })
+
 }
 </script>
