@@ -7,7 +7,7 @@
             <div class="flex flex-col items-end justify-end gap-3">
                 <UButton color="white" variant="solid" label="Agregar" to="/inquilinos/nuevo" />
             </div>
-            <UCard class="mt-2">
+            <UCard class="mt-2 bg-slate-50">
                 <template #header>
                     <h1>
                         Lista de inquilinos
@@ -112,6 +112,32 @@
                 </div>
             </UCard>
         </UModal>
+        <UModal v-model="openPayments" prevent-close>
+            <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+                <template #header>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+                            Pagos recibidos del inquilino
+                        </h3>
+                        <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                            @click="openPayments = false" />
+                    </div>
+                </template>
+                <UTable :columns="columnsPayments" :rows="paymentData">
+                    <template #actions-data="{ row }">
+                        <UDropdown :items="items(row)">
+                            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+                        </UDropdown>
+                    </template>
+                </UTable>
+                <template #footer >
+                    <div class="flex items-center">
+                        Ha pagado un total de ${{ totalPayment }} 
+                    </div>
+                </template>
+
+            </UCard>
+        </UModal>
     </div>
 </template>
   
@@ -139,7 +165,8 @@ const columns = [{
     label: 'Descripción',
 },
 {
-    key: 'actions'
+    key: 'actions',
+    label: 'Opciones'
 }
 ]
 const runtimeConfig = useRuntimeConfig();
@@ -156,6 +183,25 @@ const tenantData = ref({
     createdAt: '',
     updatedAt: '',
 });
+const paymentData = ref([{}])
+const openPayments = ref(false);
+const totalPayment = ref(0);
+const columnsPayments = [{
+    key: 'index',
+    label: '#'
+    },
+    {
+    key: 'apartmentName',
+    label: 'Apartamento'
+    },{
+    key: 'amount',
+    label: 'Monto'
+    },
+    {
+    key: 'date',
+    label: 'Fecha de pago'
+    },
+]
 
 const tenants = ref([]);
 async function getTenants() {
@@ -177,13 +223,17 @@ onMounted(async () => {
 function items(row: any) {
     return [
         [{
-            label: 'Ver',
+            label: 'Ver Información',
             icon: 'i-heroicons-eye-20-solid',
             click: async () => await getInfoById(row.id)
         }, {
             label: 'Editar',
             icon: 'i-heroicons-pencil-square-20-solid',
             click: () => route.push(`/inquilinos/edit/${row.id}`)
+        }, {
+            label: 'Ver Pagos',
+            icon: 'i-heroicons-eye-20-solid',
+            click: async () => await getPaymentsById(row.id)
         }, {
             label: 'Activar/Desactivar',
             icon: 'i-heroicons-exclamation-circle-20-solid',
@@ -193,7 +243,6 @@ function items(row: any) {
 }
 
 async function getInfoById(id: number) {
-    console.log(id)
     isOpen.value = true;
     tenantData.value = (await axios.get(`${runtimeConfig.public.API_URL}/tenant/${id}`)).data
 }
@@ -202,6 +251,18 @@ async function changeStatus(id: number) {
     await axios.patch(`${runtimeConfig.public.API_URL}/tenant/update-status/${id}`)
 
     await getTenants()
+}
+
+async function getPaymentsById(id: number) {
+    openPayments.value = true;
+
+    const data = (await axios.get(`${runtimeConfig.public.API_URL}/payment/tenant/${id}`)).data
+    totalPayment.value = data.totalPayments;
+    let index = 0;
+    paymentData.value = data.data.map((payment: any)=>{
+        payment.index = ++index;
+        return payment;
+    })
 }
 </script>
   

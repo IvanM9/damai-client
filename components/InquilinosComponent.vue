@@ -55,7 +55,6 @@
     </UModal>
 </template>
 <script setup lang="ts">
-import Joi from 'joi'
 import type { FormSubmitEvent } from '#ui/types'
 import axios from 'axios'
 
@@ -76,7 +75,7 @@ const state = reactive({
     firstName: promp.tenantData?.firstName ?? undefined,
     lastName: promp.tenantData?.lastName ?? undefined,
     phone: promp.tenantData?.phone ?? undefined,
-    identification: promp.tenantData?.phone ?? undefined,
+    identification: promp.tenantData?.identification ?? undefined,
     email: promp.tenantData?.email ?? undefined,
     description: promp.tenantData?.description ?? undefined
 })

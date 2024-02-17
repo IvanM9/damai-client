@@ -7,7 +7,7 @@
       <div class="flex flex-col items-end justify-end gap-3">
         <UButton color="white" variant="solid" label="Agregar" to="/departamentos/nuevo" />
       </div>
-      <UCard class="mt-2">
+      <UCard class="mt-2 bg-slate-50">
         <template #header>
           <h1>
             Lista de departamentos
@@ -114,6 +114,34 @@
         </div>
       </UCard>
     </UModal>
+
+    <UModal v-model="openPayments" prevent-close>
+            <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+                <template #header>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+                            Pagos recibidos para este apartamento
+                        </h3>
+                        <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                            @click="openPayments = false" />
+                    </div>
+                </template>
+                <UTable :columns="columnsPayments" :rows="paymentData">
+                    <template #actions-data="{ row }">
+                        <UDropdown :items="items(row)">
+                            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+                        </UDropdown>
+                    </template>
+                </UTable>
+                <template #footer >
+                    <div class="flex items-center">
+                        Se ha obtenido un total de ${{ totalPayment }} en este apartamento
+                    </div>
+                </template>
+
+            </UCard>
+        </UModal>
+
   </div>
 </template>
 
@@ -145,7 +173,8 @@ const columns = [{
 //   label: 'Descripción'
 // }, 
 {
-  key: 'actions'
+  key: 'actions',
+  label: 'Opciones'
 }
 ]
 const runtimeConfig = useRuntimeConfig();
@@ -172,6 +201,26 @@ const apartmentData = ref({
     }
   ]
 });
+
+const paymentData = ref([{}])
+const openPayments = ref(false);
+const totalPayment = ref(0);
+const columnsPayments = [{
+    key: 'index',
+    label: '#'
+    },
+    {
+    key: 'tenant',
+    label: 'Inquilino'
+    },{
+    key: 'amount',
+    label: 'Monto'
+    },
+    {
+    key: 'date',
+    label: 'Fecha de pago'
+    },
+]
 
 const statusFilter = [{
   label: 'Activos',
@@ -217,6 +266,11 @@ function items(row: any) {
       icon: 'i-heroicons-pencil-square-20-solid',
       click: () => route.push(`/departamentos/edit/${row.id}`)
     }, {
+            label: 'Ver Pagos',
+            icon: 'i-heroicons-eye-20-solid',
+            click: async () => await getPaymentsById(row.id)
+    }, 
+    {
       label: 'Activar/Desactivar',
       icon: 'i-heroicons-exclamation-circle-20-solid',
       click: async () => await changeStatus(row.id)
@@ -237,5 +291,18 @@ async function changeStatus(id: number) {
   })
 
   await getApartments()
+}
+
+async function getPaymentsById(id: number) {
+    openPayments.value = true;
+
+    const data = (await axios.get(`${runtimeConfig.public.API_URL}/payment/apartment/${id}`)).data
+    totalPayment.value = data.totalPayments;
+    let index = 0;
+    paymentData.value = data.data.map((payment: any)=>{
+        payment.index = ++index;
+        payment.tenant = `${payment.tenantFirstName} ${payment.tenantLastName}`
+        return payment;
+    })
 }
 </script>

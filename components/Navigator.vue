@@ -20,7 +20,7 @@ const links = [{
 </script>
 
 <template>
-    <UVerticalNavigation  :links="links" class="navigation shadow-lg shadow-indigo-500/40 pt-3"/>
+    <UVerticalNavigation  :links="links" class="navigation shadow-lg shadow-indigo-500/40 pt-3 bg-sky-300" />
 </template>
 <style>
 .flex-container {
