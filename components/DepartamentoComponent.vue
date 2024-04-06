@@ -1,7 +1,7 @@
 <template>
     <UContainer class="container mt-4">
         <div class="flex flex-col items-start justify-start">
-            <UButton color="white" variant="solid" label="Regresar" to="/departamentos" />
+            <UButton color="primary" label="Regresar" to="/departamentos" />
         </div>
         <UCard class="mt-2">
             <template #header>
@@ -34,7 +34,7 @@
                     <UCheckbox name="busy" label="¿Si o No?" v-model="state.busy" />
                 </UFormGroup>
 
-                <UButton type="submit" label="Guardar" class="p-2 mt-2" />
+                <UButton type="submit" label="Guardar" class="p-2 mt-2" color="gray" />
             </UForm>
         </UCard>
         <UNotifications />

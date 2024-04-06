@@ -5,9 +5,9 @@
         <!-- Contenedor -->
         <UContainer class="container mt-4">
             <div class="flex flex-col items-end justify-end gap-3">
-                <UButton color="white" variant="solid" label="Agregar" to="/inquilinos/nuevo" />
+                <UButton color="primary" variant="solid" label="Agregar" to="/inquilinos/nuevo" />
             </div>
-            <UCard class="mt-2 bg-slate-50">
+            <UCard class="mt-2">
                 <template #header>
                     <h1>
                         Lista de inquilinos

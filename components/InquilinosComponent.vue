@@ -1,7 +1,7 @@
 <template>
     <UContainer class="container mt-4">
         <div class="flex flex-col items-start justify-start">
-            <UButton color="white" variant="solid" label="Regresar" to="/inquilinos" />
+            <UButton color="primary" label="Regresar" to="/inquilinos" />
         </div>
         <UCard class="mt-2">
             <template #header>
@@ -32,7 +32,7 @@
                     <UTextarea name="description" v-model="state.description" />
                 </UFormGroup>
 
-                <UButton type="submit" label="Guardar" class="p-2 mt-2" />
+                <UButton type="submit" label="Guardar" class="p-2 mt-2" color="gray" />
             </UForm>
         </UCard>
 
@@ -45,7 +45,7 @@
                     <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                         ¿Crear contrato?
                     </h3>
-                    <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                    <UButton color="gray" icon="i-heroicons-x-mark-20-solid" class="-my-1"
                         @click="isOpen = false" />
                 </div>
             </template>

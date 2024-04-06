@@ -3,7 +3,7 @@
     <div class="flex-container">
         <!-- <Navigator /> -->
         <UContainer class="container">
-            <UCard class="mt-2 bg-slate-50">
+            <UCard class="mt-2 bg-tasman-50">
                 <template #header>
                     <h1 class="flex justify-center mb-4">
                         Lista de pagos
