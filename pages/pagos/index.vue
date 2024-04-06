@@ -1,7 +1,7 @@
 
 <template>
     <div class="flex-container">
-        <Navigator />
+        <!-- <Navigator /> -->
         <UContainer class="container">
             <UCard class="mt-2 bg-slate-50">
                 <template #header>

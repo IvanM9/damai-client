@@ -1,6 +1,6 @@
 <template>
   <div class="flex-container">
-    <Navigator />
+    <!-- <Navigator /> -->
 
     <!-- Contenedor -->
     <UContainer class="container mt-4">

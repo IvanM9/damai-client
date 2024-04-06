@@ -1,6 +1,6 @@
 <template>
     <div class="flex-container">
-        <Navigator />
+        <!-- <Navigator /> -->
         <InquilinosComponent :is-edit="false" />    
     </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex-container">
-    <Navigator  />
+    <!-- <Navigator  /> -->
     <UContainer class="container">
       <h2>Hola index</h2>
     </UContainer>

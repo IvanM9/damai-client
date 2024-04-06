@@ -20,7 +20,13 @@ const links = [{
 </script>
 
 <template>
-    <UVerticalNavigation  :links="links" class="navigation shadow-lg shadow-indigo-500/40 pt-3 bg-sky-300" />
+  <UVerticalNavigation :links="links" :ui="{
+    size: 'text-lg', padding: 'px-5 py-3',
+    inactive: 'text-white dark:text-white hover:text-gray-700 dark:hover:text-white hover:before:bg-gray-50 dark:hover:before:bg-gray-800/50',
+    icon: {
+      inactive: 'text-white dark:text-white',
+    },
+  }" class="navigation shadow-lg shadow-indigo-500/40 bg-tasman-500 dark:bg-ship-gray-800" />
 </template>
 <style>
 .flex-container {
@@ -29,7 +35,8 @@ const links = [{
 }
 
 .navigation {
-  width: 200px; /* Ajusta este valor según tus necesidades */
+  width: 200px;
+  /* Ajusta este valor según tus necesidades */
 }
 
 .container {

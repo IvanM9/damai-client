@@ -1,6 +1,6 @@
 <template>
     <div class="flex-container">
-        <Navigator />
+        <!-- <Navigator /> -->
 
         <!-- <UContainer class="container mt-4">
             <div class="flex flex-col items-start justify-start">
