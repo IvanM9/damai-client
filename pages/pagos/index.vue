@@ -8,7 +8,7 @@
                     <h1 class="flex justify-center mb-4">
                         Lista de pagos
                     </h1>
-                    <USelect :options="paymentsFilter" @change="selectFilter" placeholder="Filtrar pagos" class="mb-3" />
+                    <USelect :options="paymentsFilter" v-model="selectedFilter" placeholder="Filtrar pagos" class="mb-3" />
                     <div class="container border-2" v-if="selectedFilter == 1">
                         <div class=" grid grid-cols-2">
                             <UFormGroup label="Año" class="p-2">
@@ -97,11 +97,6 @@ const paymentsFilter = [{
     value: 4
 },]
 const selectedFilter = ref(0)
-async function selectFilter(value: any) {
-    console.log(value.srcElement.value)
-    selectedFilter.value = value.srcElement.value
-    await getPayments();
-}
 
 onMounted(async () => {
     await getPayments()
@@ -120,13 +115,9 @@ function items(row: any) {
             label: 'Editar',
             icon: 'i-heroicons-pencil-square-20-solid',
             click: () => route.push(`/departamentos/edit/${row.id}`)
-        }, {
-            label: 'Ver Pagos',
-            icon: 'i-heroicons-eye-20-solid',
-            // click: async () => await getPaymentsById(row.id)
         },
         {
-            label: 'Activar/Desactivar',
+            label: 'Eliminar',
             icon: 'i-heroicons-exclamation-circle-20-solid',
             //   click: async () => await changeStatus(row.id)
         }]

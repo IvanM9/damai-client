@@ -26,7 +26,7 @@
         </UContainer>
 
         <!-- Modal -->
-        <UModal v-model="isOpen" prevent-close>
+        <UModal v-model="isOpen">
             <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
                 <template #header>
                     <div class="flex items-center justify-between">
@@ -112,7 +112,7 @@
                 </div>
             </UCard>
         </UModal>
-        <UModal v-model="openPayments" prevent-close>
+        <UModal v-model="openPayments" :ui="{ width: 'sm:max-w-xl' }">
             <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
                 <template #header>
                     <div class="flex items-center justify-between">
@@ -123,24 +123,17 @@
                             @click="openPayments = false" />
                     </div>
                 </template>
-                <UTable :columns="columnsPayments" :rows="paymentData">
-                    <template #actions-data="{ row }">
-                        <UDropdown :items="items(row)">
-                            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-                        </UDropdown>
-                    </template>
-                </UTable>
-                <template #footer >
+                <UTable :columns="columnsPayments" :rows="paymentData"></UTable>
+                <template #footer>
                     <div class="flex items-center">
-                        Ha pagado un total de ${{ totalPayment }} 
+                        Ha pagado un total de ${{ totalPayment }}
                     </div>
                 </template>
-
             </UCard>
         </UModal>
     </div>
 </template>
-  
+
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
@@ -189,18 +182,18 @@ const totalPayment = ref(0);
 const columnsPayments = [{
     key: 'index',
     label: '#'
-    },
-    {
+},
+{
     key: 'apartmentName',
     label: 'Apartamento'
-    },{
+}, {
     key: 'amount',
     label: 'Monto'
-    },
-    {
+},
+{
     key: 'date',
     label: 'Fecha de pago'
-    },
+},
 ]
 
 const tenants = ref([]);
@@ -259,10 +252,9 @@ async function getPaymentsById(id: number) {
     const data = (await axios.get(`${runtimeConfig.public.API_URL}/payment/tenant/${id}`)).data
     totalPayment.value = data.totalPayments;
     let index = 0;
-    paymentData.value = data.data.map((payment: any)=>{
+    paymentData.value = data.data.map((payment: any) => {
         payment.index = ++index;
         return payment;
     })
 }
 </script>
-  

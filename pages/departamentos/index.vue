@@ -14,7 +14,7 @@
           </h1>
         </template>
 
-        <USelect :options="statusFilter" @change="selectFilter" placeholder="Activos/Inactivos" />
+        <USelect :options="statusFilter" @change="getApartments" v-model="selectedStatus" placeholder="Activos/Inactivos" />
 
         <UTable :columns="columns" :rows="apartments">
           <template #actions-data="{ row }">
@@ -28,7 +28,7 @@
     </UContainer>
 
     <!-- Modal -->
-    <UModal v-model="isOpen" prevent-close>
+    <UModal v-model="isOpen">
       <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
         <template #header>
           <div class="flex items-center justify-between">
@@ -115,7 +115,7 @@
       </UCard>
     </UModal>
 
-    <UModal v-model="openPayments" prevent-close>
+    <UModal v-model="openPayments" :ui="{width: 'sm:max-w-xl'}">
             <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
                 <template #header>
                     <div class="flex items-center justify-between">
@@ -126,13 +126,15 @@
                             @click="openPayments = false" />
                     </div>
                 </template>
-                <UTable :columns="columnsPayments" :rows="paymentData">
-                    <template #actions-data="{ row }">
-                        <UDropdown :items="items(row)">
-                            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-                        </UDropdown>
-                    </template>
-                </UTable>
+                <div class="overflow-y-auto">
+                  <UTable :columns="columnsPayments" :rows="paymentData">
+                      <template #actions-data="{ row }">
+                          <UDropdown :items="items(row)">
+                              <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+                          </UDropdown>
+                      </template>
+                  </UTable>
+                </div>
                 <template #footer >
                     <div class="flex items-center">
                         Se ha obtenido un total de ${{ totalPayment }} en este apartamento
@@ -243,11 +245,6 @@ async function getApartments() {
     apartment.busy = apartment.busy ? 'Si' : 'No'
     return apartment;
   })
-}
-
-async function selectFilter(value: any) {
-  selectedStatus.value = value.srcElement.value
-  await getApartments()
 }
 
 onMounted(async () => {
