@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "damai_apartments",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,15 +12,15 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@vite-pwa/nuxt": "^0.6.0",
-    "nuxt": "^3.8.0",
-    "vue": "^3.3.7",
-    "vue-router": "^4.2.5"
+    "nuxt": "^3.11.2",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   },
   "dependencies": {
-    "@nuxt/ui": "^2.10.0",
+    "@nuxt/ui": "^2.15.1",
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.6.2",
-    "joi": "^17.11.0",
+    "axios": "^1.6.8",
+    "joi": "^17.12.3",
     "v-calendar": "^3.1.2"
   }
 }
