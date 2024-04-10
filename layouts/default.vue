@@ -26,9 +26,10 @@ const links = [{
     icon: {
       inactive: 'text-white dark:text-white',
     },
-  }" class="navigation shadow-lg shadow-indigo-500/40 bg-tasman-500 dark:bg-ship-gray-800" />
+  }" class="navigation shadow-lg shadow-indigo-500/40 bg-tasman-500 dark:bg-ship-gray-800 " />
+  <slot />
 </template>
-<style>
+<style scoped>
 .flex-container {
   display: flex;
   height: 100vh;
