@@ -10,12 +10,15 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
+
   modules: ['@nuxt/ui', '@vite-pwa/nuxt'],
+
   runtimeConfig: {
     public: {
       API_URL: 'http://localhost:4000/api'
     }
   },
+
   pwa: {
     strategies: sw ? 'injectManifest' : 'generateSW',
     srcDir: sw ? 'service-worker' : undefined,
@@ -35,5 +38,7 @@ export default defineNuxtConfig({
         },
       ],
     }
-  }
+  },
+
+  compatibilityDate: '2025-03-19'
 })

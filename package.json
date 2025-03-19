@@ -11,16 +11,16 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@vite-pwa/nuxt": "^0.6.0",
-    "nuxt": "^3.11.2",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "@vite-pwa/nuxt": "^0.10.6",
+    "nuxt": "^3.16.1",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "dependencies": {
-    "@nuxt/ui": "^2.15.1",
+    "@nuxt/ui": "^2.21.1",
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.6.8",
-    "joi": "^17.12.3",
+    "axios": "^1.8.4",
+    "joi": "^17.13.3",
     "v-calendar": "^3.1.2"
   }
 }
